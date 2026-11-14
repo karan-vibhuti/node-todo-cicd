@@ -1,16 +1,22 @@
-# Node Base Image
-FROM node:12.2.0-alpine
 
-#Working Directry
-WORKDIR /node
+FROM node:26-alpine
 
-#Copy the Code
-COPY . .
+WORKDIR /app
 
-#Install the dependecies
-RUN npm install
-RUN npm run test
+COPY --chown=node:node package*.json ./
+
+RUN chown -R node:node /app
+
+USER node
+
+RUN npm ci
+
+# Copy application source
+COPY --chown=node:node . .
+
+# Run tests during image build
+RUN npm test
+
 EXPOSE 8000
 
-#Run the code
-CMD ["node","app.js"]
+CMD ["npm", "start"]

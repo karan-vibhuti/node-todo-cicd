@@ -1,7 +1,8 @@
-version: '3.9'
-
 services:
   web:
-    image: trainwithshubham/node-app:latest
+    build: .
+    image: node-todo-cicd:v1
+    container_name: node-todo-app
     ports:
       - "8000:8000"
+    restart: unless-stopped
